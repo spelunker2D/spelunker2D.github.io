@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Splunker 2D! - Cave gen test</title>
+    <!-- Load CSS -->
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <!-- Load libaries -->
+    <script src="libs/alea.js"></script>
+    <script src="libs/simplex-noise.js"></script>
+  </head>
+  <body>
+    <h1>Cave generation test</h1>
+    <!-- Create seed entry form -->
+    <div id="seed-entry">
+      <p>Enter seed</p>
+      <input type="number" id="seed">
+      <input type="button" value="Load" id="load">
+    </div>
+    <!-- Create canvas -->
+    <p>white is open, black is rock</p>
+    <canvas id="screen">
+      <h1 class="error">Your browser doesn't support the canvas API.
+        Considure upgrading to a newer browser</h1>
+    </canvas>
+    <!-- Load main script -->
+    <script src="js/index.js"></script>
+  </body>
+</html>
