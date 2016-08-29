@@ -3,14 +3,28 @@ var canvas = document.getElementById("screen")
 var ctx = canvas.getContext("2d")
 // Add event handler to load button
 var load_button = document.getElementById("load")
-load_button.addEventListener("click", draw_map)
+load_button.addEventListener("click", load_map)
+// Add scrolling
+window.addEventListener("keydown", scroll_map)
+// Map props
+var screen_props = { x: canvas.width/2,
+                     y: canvas.height/2,
+                     width: canvas.width/25,
+                     height: canvas.height/25,
+                     size: 25,
+                     map: null
+                   }
 
-function draw_map() {
+// Create map when loaded
+load_map()
+
+function load_map() {
   // Create a map based off of the seed
-  console.log("Drawing map...")
   var seed = document.getElementById("seed").value
-  var map = create_map(canvas.width, canvas.height, seed, 0.35)
-  render_map(map)
+  screen_props.map = create_map(canvas.width, canvas.height, seed, 0.35)
+  render_map(screen_props.map, screen_props.x, screen_props.y,
+             screen_props.width, screen_props.height,
+             screen_props.size)
 }
 
 function create_map(width, height, seed, cutoff) {
@@ -40,17 +54,33 @@ function create_map(width, height, seed, cutoff) {
   return map
 }
 
-function render_map(map) {
-  for (var y = 0; y < map.length; y++) {
-    for (var x = 0; x < map[y].length; x++) {
-      if (map[y][x] === 0) {
-        ctx.fillStyle = "white"
-      } else {
+function render_map(map, x1, y1, width, height, size) {
+  var x2 = x1 + width
+  var y2 = y1 + height
+  for (var i = y1, y = 0; i < y2; i++, y += size) {
+    for (var j = x1, x = 0; j < x2; j++, x += size) {
+      if (map[i][j] === 0) {
         ctx.fillStyle = "black"
+      } else {
+        ctx.fillStyle = "gray"
       }
-      ctx.fillRect(x, y, 1, 1)
+      ctx.fillRect(x, y, size, size)
     }
   }
+}
+
+function scroll_map(event) {
+  switch (event.keyCode) {
+    case 37: screen_props.x = Math.max(screen_props.x - 1, 0); break
+    case 38: screen_props.y = Math.max(screen_props.y - 1, 0); break
+    case 39: screen_props.x = Math.min(screen_props.x + 1, screen_props.map[0].length); break
+    case 40: screen_props.y = Math.min(screen_props.y + 1, screen_props.map.length); break
+    default: return
+  }
+  event.preventDefault()
+  render_map(screen_props.map, screen_props.x, screen_props.y,
+             screen_props.width, screen_props.height,
+             screen_props.size)
 }
 
 function map_val(value, istart, istop,  ostart,  ostop) {

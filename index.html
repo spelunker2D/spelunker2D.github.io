@@ -14,11 +14,13 @@
     <!-- Create seed entry form -->
     <div id="seed-entry">
       <p>Enter seed</p>
-      <input type="number" id="seed">
+      <input type="number" id="seed" default="1">
       <input type="button" value="Load" id="load">
     </div>
+    <!-- Give instructions -->
+    <p>black is open, gray is rock</p>
+    <p>Use the arrow keys to scroll the map</p>
     <!-- Create canvas -->
-    <p>white is open, black is rock</p>
     <canvas id="screen">
       <h1 class="error">Your browser doesn't support the canvas API.
         Considure upgrading to a newer browser</h1>
