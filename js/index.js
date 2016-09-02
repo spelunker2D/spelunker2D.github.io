@@ -22,9 +22,10 @@ var screen_props = { x: canvas.width/2,
                    }
 
 // Create map when loaded
-var stone = new Image()
+load_map();
+/*var stone = new Image()
 stone.src = "/voxel-pack/PNG/Tiles/stone.png"
-stone.addEventListener("load", load_map)
+stone.addEventListener("load", load_map)*/
 
 function load_map() {
   // Create a map based off of the seed
@@ -79,7 +80,10 @@ function render_map(map, x1, y1, width, height, size, lightX, lightY) {
         ctx.fillRect(x, y, size, size)
       } else {
         ctx.fillStyle = "gray"
-        ctx.drawImage(stone, x, y, size, size)
+        ctx.drawImage(Assets.Tiles.img,
+          Assets.Tiles.stone.x, Assets.Tiles.stone.y,
+          Assets.Tiles.stone.width, Assets.Tiles.stone.height,
+          x, y, size, size)
       }
     }
   }
