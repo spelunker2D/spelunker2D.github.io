@@ -10,18 +10,18 @@
     <script src="libs/simplex-noise.js"></script>
   </head>
   <body>
-    <h1>Cave generation test</h1>
     <!-- Create seed entry form -->
-    <div id="seed-entry">
+    <div id="seed-entry" >
+      <h1>Cave generation test</h1>
       <label for="seed">Seed</label>
       <input type="number" id="seed" default="1">
       <label for="cutoff">Cutoff</label>
       <input type="number" value="0" step="0.05" id="cutoff">
       <input type="button" value="Load" id="load">
-    </div>
     <!-- Give instructions -->
     <p>Use the arrow keys to scroll the map</p>
     <p id="status"></p>
+    </div>
     <!-- Create canvas -->
     <canvas id="screen">
       <h1 class="error">Your browser doesn't support the canvas API.</h1>
