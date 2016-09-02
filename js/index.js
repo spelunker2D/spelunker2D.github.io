@@ -9,12 +9,15 @@ var cutoff = document.getElementById("cutoff")
 cutoff.addEventListener("input", load_map)
 // Add scrolling
 window.addEventListener("keydown", scroll_map)
+window.addEventListener("mousemove", mouseMoveHandler, false);
 // Map props
 var screen_props = { x: canvas.width/2,
                      y: canvas.height/2,
                      width: canvas.width/25,
                      height: canvas.height/25,
                      size: 25,
+                     lightX: canvas.width/2,
+                     lightY: canvas.height/2,
                      map: null
                    }
 
@@ -29,11 +32,16 @@ function load_map() {
   var cutoff = document.getElementById("cutoff").value
   screen_props.map = create_map(canvas.width, canvas.height, seed, cutoff)
   show_pos()
-  render_map(screen_props.map, screen_props.x, screen_props.y,
-             screen_props.width, screen_props.height,
-             screen_props.size)
+  requestAnimationFrame(animate)
 }
 
+function animate(time) {
+  requestAnimationFrame(animate)
+  render_map(screen_props.map, screen_props.x, screen_props.y,
+             screen_props.width, screen_props.height,
+             screen_props.size,
+             screen_props.lightX, screen_props.lightY)
+}
 function create_map(width, height, seed, cutoff) {
   // Function vars
   var map = []
@@ -61,7 +69,7 @@ function create_map(width, height, seed, cutoff) {
   return map
 }
 
-function render_map(map, x1, y1, width, height, size) {
+function render_map(map, x1, y1, width, height, size, lightX, lightY) {
   var x2 = Math.min(x1 + width, map[0].length)
   var y2 = Math.min(y1 + height, map.length)
   for (var i = y1, y = 0; i < y2; i++, y += size) {
@@ -76,7 +84,7 @@ function render_map(map, x1, y1, width, height, size) {
     }
   }
   darken(0, 0, canvas.width, canvas.height, "black", 0.7)
-  ligthenGradient(canvas.width/2, canvas.height/2, 78)
+  ligthenGradient(lightX, lightY, 78)
 }
 
 function scroll_map(event) {
@@ -91,14 +99,20 @@ function scroll_map(event) {
   }
   show_pos()
   event.preventDefault()
-  render_map(screen_props.map, screen_props.x, screen_props.y,
-             screen_props.width, screen_props.height,
-             screen_props.size)
 }
 
 function show_pos() {
   document.getElementById("status").innerText =
   "You are at X: " + screen_props.x + ", Y: " + screen_props.y
+}
+
+function mouseMoveHandler(e) {
+  var w = getComputedStyle(canvas).width;
+  var h = getComputedStyle(canvas).height;
+  w = w.slice(0, w.length-2)
+  h = h.slice(0, h.length-2)
+  screen_props.lightX = map_val(e.clientX, 0, w, 0, canvas.width);
+  screen_props.lightY = map_val(e.clientY, 0, h, 0, canvas.height);
 }
 
 function ligthenGradient(x, y, radius) {
